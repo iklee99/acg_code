@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-# acg_code
-
-=======
 # acg_code (Not yet complete)
->>>>>>> dd95584 (first commit again)
+
 This repository contains example code for the "Advanced Computer Graphics" course offered by the Yonsei University Computer Science Department.
 
 About the Course
