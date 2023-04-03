@@ -1,4 +1,5 @@
 // Text
+// from ttf to json fonts: http://gero3.github.io/facetype.js/
 
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
