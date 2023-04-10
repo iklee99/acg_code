@@ -105,8 +105,8 @@ function main() {
         new THREE.BufferAttribute(uvs, uvNumComponents));
   
     geometry.setIndex([
-        0,  1,  2,   2,  1,  3,  // front
-        4,  5,  6,   6,  5,  7,  // right
+        0,  1,  2,   2,  1,  3,  // front two triangles
+        4,  5,  6,   6,  5,  7,  // right two triangles
         8,  9, 10,  10,  9, 11,  // back
         12, 13, 14,  14, 13, 15,  // left
         16, 17, 18,  18, 17, 19,  // top
@@ -133,8 +133,11 @@ function main() {
     ];
   
     function resizeRendererToDisplaySize(renderer) {
+        // 현재 카메라의 aspect ratio를 window의 innerWidth와 innerHeight로 설정
         camera.aspect = window.innerWidth / window.innerHeight;
+        // 카메라의 projection matrix를 업데이트
         camera.updateProjectionMatrix();
+        // 렌더러의 크기를 window의 innerWidth와 innerHeight로 설정
         renderer.setSize( window.innerWidth, window.innerHeight );
     }
   
@@ -147,12 +150,14 @@ function main() {
             camera.updateProjectionMatrix();
         }
 
+        /*
         cubes.forEach((cube, ndx) => {
             const speed = 1 + ndx * .1;
             const rot = time * speed;
             cube.rotation.x = rot;
             cube.rotation.y = rot;
         });
+        */
 
         stats.begin();
         renderer.render(scene, camera);

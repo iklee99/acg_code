@@ -58,9 +58,7 @@ fontLoader.load('./json-font/ArialUnicode.json', function (font) {
 
   // create a mesh from the TextGeometry and MeshBasicMaterial objects
   const mesh = new THREE.Mesh(textGeometry, material);
-  mesh.translateZ(-1);
-  mesh.translateY(2);
-  mesh.translateX(2);
+  mesh.position.set(2, 2, -1);
 
   // add the mesh to the scene
   scene.add(mesh);
