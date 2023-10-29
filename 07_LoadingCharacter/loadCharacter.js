@@ -9,6 +9,10 @@ init();
 animate();
 
 function init() {
+
+    // Clock
+    clock = new THREE.Clock();
+
     // Scene
     scene = new THREE.Scene();
 
@@ -63,10 +67,7 @@ function init() {
         scene.add(object);
         console.log(object);
     });
-
-    // Clock
-    clock = new THREE.Clock();
-
+    
     // Window resize event
     window.addEventListener('resize', onWindowResize, false);
 }

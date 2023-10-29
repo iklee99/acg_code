@@ -9,6 +9,10 @@ init();
 animate();
 
 function init() {
+
+    // Clock
+    clock = new THREE.Clock();
+
     // Scene
     scene = new THREE.Scene();
 
@@ -82,9 +86,6 @@ function init() {
     gui.add(settings, 'Show Bone Tree').name('Bone Tree').onChange((value) => {
         document.getElementById('boneTree').style.display = value ? 'block' : 'none';
     });
-
-    // Clock
-    clock = new THREE.Clock();
 
     // Window resize event
     window.addEventListener('resize', onWindowResize, false);
