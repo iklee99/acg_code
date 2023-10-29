@@ -14,7 +14,7 @@ function init() {
 
     // Camera
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 100, 500);
+    camera.position.set(0, 80, 400);
 
     // Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -27,11 +27,14 @@ function init() {
     controls.update();
 
     // Lighting
-    let ambientLight = new THREE.AmbientLight(0x888888, 0.4);
+    let ambientLight = new THREE.AmbientLight(0x222222, 1);
     scene.add(ambientLight);
-    let directionalLight = new THREE.DirectionalLight(0xaaaaaa, 0.5);
-    directionalLight.position.set(0, 1, 0);
+    let directionalLight = new THREE.DirectionalLight(0xcccccc, 0.8);
+    directionalLight.position.set(200, 200, 0);
     scene.add(directionalLight);
+    let pointLight = new THREE.PointLight(0x999999, 0.5);
+    pointLight.position.set(0, 100, 200);
+    scene.add(pointLight);
 
     // grid helper
     gridHelper = new THREE.GridHelper(800, 50, 0x222222, 0x444444);
@@ -40,7 +43,20 @@ function init() {
 
     // FBX Loader
     let loader = new FBXLoader();
-    loader.load('./models/character2/Hip Hop Dancing.fbx', (object) => {
+    loader.load('../models/character2/Idle.fbx', (object) => {
+
+        let objectsToRemove = [];
+
+        object.traverse(child => {
+            // light나 camera가 포함되어 있을 경우 제거할 리스트에 담아 둠
+            if (child instanceof THREE.Light || child instanceof THREE.Camera) {
+                objectsToRemove.push(child);
+            }
+        });
+
+        objectsToRemove.forEach(child => {   // 제거 리스트에 담긴 것들을 제거
+            object.remove(child);
+        });
         mixer = new THREE.AnimationMixer(object);
         let action = mixer.clipAction(object.animations[0]);
         action.play();
@@ -48,13 +64,14 @@ function init() {
 
         renameBones(object);         // bone 이름 변경: 앞부분의 "mixamorig" 제거
 
-        //printBoneHierarchy(object);  // bone 계층 구조를 출력하는 함수를 호출
-
+        // bone hierarchy를 display
         object.traverse(child => {
             if (child instanceof THREE.SkinnedMesh) {
                 displayBoneHierarchy(child);
             }
         });
+
+        console.log(object);
     });
 
     // GUI 추가
@@ -81,19 +98,6 @@ function renameBones(object) {
     });
 }
 
-/*
-function printBoneHierarchy(object) {
-    object.traverse(child => {
-        if (child instanceof THREE.SkinnedMesh) {
-            console.log("Bone Hierarchy:");
-            child.skeleton.bones.forEach(bone => {
-                console.log(bone.name);  // 본의 이름을 출력
-            });
-        }
-    });
-}
-*/
-
 function createBoneTree(bone, ulElement) {
     let li = document.createElement('li');
     li.textContent = bone.name;
@@ -101,8 +105,8 @@ function createBoneTree(bone, ulElement) {
 
     if (bone.children.length > 0) {
         let childUl = document.createElement('ul');
-        childUl.style.marginLeft = '10px';  // 들여쓰기 간격 조정
-        childUl.style.paddingLeft = '5px';  // 들여쓰기 간격 조정
+        childUl.style.marginLeft = '30px';  // 들여쓰기 간격 조정
+        childUl.style.paddingLeft = '15px';  // 들여쓰기 간격 조정
         li.appendChild(childUl);
         bone.children.forEach(childBone => {
             createBoneTree(childBone, childUl);
